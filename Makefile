@@ -4,19 +4,21 @@ CC?=gcc
 CFLAGS_DEBUG?=-g -pedantic -std=c99 -Wall -Wextra -Wmissing-prototypes -Wold-style-definition
 CFLAGS_RELEASE?=-O2 -std=c99
 CFLAGS?=${CFLAGS_DEBUG}
+EXT?=so
 INCS?=
 LIBS?=
 PLATFORM?=Debug
-
-SRC:=$(wildcard src/*.c src/**/*.c src/**/**/*.c src/**/**/**/*.c src/**/**/**/**/*.c)
-OBJ:=$(patsubst src/%.c, src/%.o, $(SRC))
+RPATH?=-Wl,-rpath=./
 
 .PHONY=build
 build:
 	mkdir -p bin
 	mkdir -p bin/${PLATFORM}
-	${foreach file, ${SRC}, ${CC} ${CFLAGS} -c ${file} -o ${patsubst src/%.c, src/%.o, ${file}} ${INCS} &&} echo
-	${CC} ${CFLAGS} ${OBJ} -o bin/${PLATFORM}/main ${LIBS} ${RPATH}
+	mkdir -p working-directory
+	${CC} ${CFLAGS} -c src/Cloop/Cloop.c -o src/Cloop/Cloop.o ${INCS}
+	${CC} src/Cloop/Cloop.o -shared -o working-directory/libcloop.${EXT} ${LIBS}
+	${CC} ${CFLAGS} -c src/main.c -o src/main.o ${INCS}
+	${CC} src/main.o -o bin/${PLATFORM}/main ${LIBS} -L`pwd`/working-directory -lcloop ${RPATH}
 
 .PHONY=debug
 debug:

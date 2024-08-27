@@ -2,5 +2,6 @@
 bin/Debug/*
 bin/Release/*
 *.o
+*.so
 .env
 valgrind.txt
