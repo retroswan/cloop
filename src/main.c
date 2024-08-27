@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-#include "Cloop/Cloop.h"
+#include <Cloop/Cloop.h>
 
 int main(void)
 {
@@ -14,13 +14,14 @@ int main(void)
     
     Cloop_Init(1);
     
-    while (frames < 3000) {
+    const int framesLimit = 3000;
+    while (frames < framesLimit) {
         Cloop_Run(CLOOP_TIMING_SLEEP);
         
         frames++;
         
         if (frames % 250 == 0) {
-            SDL_Log("Frame %d\n", frames);
+            SDL_Log("Frame %d / %d\n", frames, framesLimit);
         }
     }
     

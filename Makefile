@@ -14,11 +14,10 @@ RPATH?=-Wl,-rpath=./
 build:
 	mkdir -p bin
 	mkdir -p bin/${PLATFORM}
-	mkdir -p working-directory
 	${CC} ${CFLAGS} -c src/Cloop/Cloop.c -o src/Cloop/Cloop.o ${INCS}
-	${CC} src/Cloop/Cloop.o -shared -o working-directory/libcloop.${EXT} ${LIBS}
-	${CC} ${CFLAGS} -c src/main.c -o src/main.o ${INCS}
-	${CC} src/main.o -o bin/${PLATFORM}/main ${LIBS} -L`pwd`/working-directory -lcloop ${RPATH}
+	${CC} src/Cloop/Cloop.o -shared -o bin/${PLATFORM}/libcloop.${EXT} ${LIBS}
+	${CC} ${CFLAGS} -c src/main.c -o src/main.o ${INCS} -I`pwd`/include
+	${CC} src/main.o -o bin/${PLATFORM}/main ${LIBS} -L`pwd`/bin/${PLATFORM} -lcloop ${RPATH}
 
 .PHONY=debug
 debug:
@@ -31,8 +30,7 @@ release:
 .PHONY=clean
 clean:
 	rm -f ${OBJ}
-	rm -f bin/Debug/main
-	rm -f bin/Release/main
+	rm -rf bin
 
 .PHONY=valgrind
 valgrind:

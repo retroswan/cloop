@@ -19,7 +19,6 @@ void Cloop_Init(char useFuzzyTiming)
 
 void Cloop_Run(Cloop_Timing timing)
 {
-    // TODO: fail if not initialized
     if (timing != CLOOP_TIMING_NONE) {
         while (Cloop_Accumulator < Cloop_Framerate_Check) {
             const Cloop_Timer current = SDL_GetPerformanceCounter();
