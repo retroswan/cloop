@@ -29,7 +29,8 @@ release:
 
 .PHONY=clean
 clean:
-	rm -f ${OBJ}
+	rm -f src/Cloop/Cloop.o
+	rm -f src/main.o
 	rm -rf bin
 
 .PHONY=valgrind
